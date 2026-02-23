@@ -53,7 +53,7 @@ return [
         'namespace' => 'App',
         'encoding' => env('APP_ENCODING', 'UTF-8'),
         'defaultLocale' => env('APP_DEFAULT_LOCALE', 'en_US'),
-        'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'UTC'),
+        'defaultTimezone' => env('APP_DEFAULT_TIMEZONE', 'Asia/Seoul'),
         'base' => false,
         'dir' => 'src',
         'webroot' => 'webroot',
@@ -289,7 +289,7 @@ return [
             'className' => Connection::class,
             'driver' => Mysql::class,
             'persistent' => false,
-            'timezone' => 'UTC',
+            'timezone' => '+09:00',
 
             /*
              * For MariaDB/MySQL the internal default changed from utf8 to utf8mb4, aka full utf-8 support
@@ -332,7 +332,7 @@ return [
             'className' => Connection::class,
             'driver' => Mysql::class,
             'persistent' => false,
-            'timezone' => 'UTC',
+            'timezone' => '+09:00',
             'encoding' => 'utf8mb4',
             'flags' => [],
             'cacheMetadata' => true,
