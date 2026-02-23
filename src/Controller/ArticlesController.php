@@ -11,4 +11,10 @@ class ArticlesController extends AppController
         $articles = $this->paginate($this->Articles);
         $this->set(compact('articles'));
     }
+
+    public function view(?string $slug): void
+{
+    $article = $this->Articles->findBySlug($slug)->firstOrFail();
+    $this->set(compact('article'));
+}
 }
