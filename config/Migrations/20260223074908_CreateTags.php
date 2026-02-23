@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 use Migrations\BaseMigration;
 
-class CreateUsers extends BaseMigration
+class CreateTags extends BaseMigration
 {
     /**
      * Change Method.
@@ -15,15 +15,10 @@ class CreateUsers extends BaseMigration
      */
     public function change(): void
     {
-        $table = $this->table('users');
-        $table->addColumn('email', 'string', [
+        $table = $this->table('tags');
+        $table->addColumn('title', 'string', [
             'default' => null,
-            'limit' => 255,
-            'null' => false,
-        ]);
-        $table->addColumn('password', 'string', [
-            'default' => null,
-            'limit' => 255,
+            'limit' => 191,
             'null' => false,
         ]);
         $table->addColumn('created', 'datetime', [
@@ -33,6 +28,13 @@ class CreateUsers extends BaseMigration
         $table->addColumn('modified', 'datetime', [
             'default' => null,
             'null' => true,
+        ]);
+        $table->addIndex([
+            'title',
+        
+            ], [
+            'name' => 'UNIQUE_TITLE',
+            'unique' => true,
         ]);
         $table->create();
     }
