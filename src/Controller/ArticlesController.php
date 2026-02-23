@@ -12,6 +12,11 @@ class ArticlesController extends AppController
     public function index(): void
     {
         $this->Authorization->skipAuthorization();
+        $this->paginate = [
+        'order' => [
+            'Articles.created' => 'desc'
+        ],
+        ];
         $articles = $this->paginate($this->Articles);
         $this->set(compact('articles'));
     }
@@ -19,7 +24,10 @@ class ArticlesController extends AppController
     public function view(?string $slug): void
     {
         $this->Authorization->skipAuthorization();
-        $article = $this->Articles->findBySlug($slug)->firstOrFail();
+        $article = $this->Articles
+            ->findBySlug($slug)
+            ->contain('Tags')
+            ->firstOrFail();
         $this->set(compact('article'));
     }
 
@@ -42,6 +50,12 @@ class ArticlesController extends AppController
             debug($article->getErrors());
             $this->Flash->error(__('Unable to add your article.'));
         }
+        // Get a list of tags.
+        $tags = $this->Articles->Tags->find('list')->all();
+
+        // Set tags to the view context
+        $this->set('tags', $tags);
+
         $this->set('article', $article);
     }
 
@@ -64,6 +78,12 @@ class ArticlesController extends AppController
             $this->Flash->error(__('Unable to update your article.'));
         }
 
+        // Get a list of tags.
+        $tags = $this->Articles->Tags->find('list')->all();
+
+        // Set tags to the view context
+        $this->set('tags', $tags);
+
         $this->set('article', $article);
     }
 
@@ -77,5 +97,36 @@ class ArticlesController extends AppController
 
             return $this->redirect(['action' => 'index']);
         }
+    }
+
+    // public function tags()
+    // {
+    //     // The 'pass' key is provided by CakePHP and contains all
+    //     // the passed URL path segments in the request.
+    //     $tags = $this->request->getParam('pass');
+
+    //     // Use the ArticlesTable to find tagged articles.
+    //     $articles = $this->Articles->find('tagged', tags: $tags)
+    //         ->all();
+
+    //     // Pass variables into the view template context.
+    //     $this->set([
+    //         'articles' => $articles,
+    //         'tags' => $tags,
+    //     ]);
+    // }
+
+    public function tags(...$tags)
+    {
+        // Use the ArticlesTable to find tagged articles.
+        $this->Authorization->skipAuthorization();
+        $articles = $this->Articles->find('tagged', tags: $tags)
+            ->all();
+
+        // Pass variables into the view template context.
+        $this->set([
+            'articles' => $articles,
+            'tags' => $tags,
+        ]);
     }
 }

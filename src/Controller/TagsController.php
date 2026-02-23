@@ -19,7 +19,7 @@ class TagsController extends AppController
     public function initialize(): void
     {
         parent::initialize();
-
+        $this->Authentication->allowUnauthenticated(['index', 'view']);
         $this->loadComponent('Authorization.Authorization');
     }
 
@@ -30,6 +30,7 @@ class TagsController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $query = $this->Tags->find();
         $query = $this->Authorization->applyScope($query);
         $tags = $this->paginate($query);

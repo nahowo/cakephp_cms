@@ -37,14 +37,20 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <nav class="top-nav">
         <div class="top-nav-title">
             <a href="<?= $this->Url->build('/') ?>"><span>Cake</span>PHP</a>
+            <?= $this->Html->link('HOME', [
+                'controller' => 'Articles',
+                'action' => 'index'])
+            ?>
         </div>
         <div class="top-nav-links">
             <?= $this->Html->link('login', [
                 'controller' => 'Users',
-                'action' => 'login']) ?>
+                'action' => 'login'])
+            ?>
             <?= $this->Html->link('logout', [
                 'controller' => 'Users',
-                'action' => 'logout']) ?>
+                'action' => 'logout'])
+            ?>
             <a target="_blank" rel="noopener" href="https://book.cakephp.org/5/">Documentation</a>
             <a target="_blank" rel="noopener" href="https://api.cakephp.org/">API</a>
         </div>
