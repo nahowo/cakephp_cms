@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\Mailer\MailerAwareTrait;
+use Cake\Routing\Router;
+
 /**
  * Users Controller
  *
@@ -10,6 +13,8 @@ namespace App\Controller;
  */
 class UsersController extends AppController
 {
+    use MailerAwareTrait;
+
     public function beforeFilter(\Cake\Event\EventInterface $event): void
     {
         parent::beforeFilter($event);
@@ -49,6 +54,7 @@ class UsersController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
         $query = $this->Users->find();
         $users = $this->paginate($query);
 
@@ -81,8 +87,9 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
+                $url = Router::url(['controller' => 'Articles', 'actioin' => 'index'], true);
+                $this->getMailer('User')->send('welcome', [$user, $url]);
+                return $this->redirect(['action' => 'login']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
         }
@@ -120,6 +127,7 @@ class UsersController extends AppController
      */
     public function delete($id = null)
     {
+        $this->Authorization->skipAuthorization();
         $this->request->allowMethod(['post', 'delete']);
         $user = $this->Users->get($id);
         if ($this->Users->delete($user)) {
