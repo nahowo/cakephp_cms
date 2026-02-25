@@ -3,11 +3,9 @@ declare(strict_types=1);
 
 namespace App\Mailer;
 
-use App\Model\Entity\User;
-use Cake\Core\Configure;
 use Cake\Mailer\Mailer;
-use Cake\Mailer\Message;
-use Cake\ORM\Locator\LocatorAwareTrait;
+use Cake\Queue\Mailer\QueueTrait;
+use Cake\ORM\TableRegistry;
 
 /**
  * User mailer.
@@ -15,8 +13,10 @@ use Cake\ORM\Locator\LocatorAwareTrait;
 
 class UserMailer extends Mailer
 {
-    public function welcome(User $user, string $url): void
+    use QueueTrait;
+    public function welcome(int $userId, string $url): void
     {
+        $user = TableRegistry::getTableLocator()->get('Users')->get($userId);
         $this
             ->setTo($user->email)
             ->setSubject('Welcome to cakephp CMS!')

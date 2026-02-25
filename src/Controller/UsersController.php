@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Routing\Router;
+use Cake\Queue\Mailer\QueueTrait;
 
 /**
  * Users Controller
@@ -14,6 +15,7 @@ use Cake\Routing\Router;
 class UsersController extends AppController
 {
     use MailerAwareTrait;
+    use QueueTrait;
 
     public function beforeFilter(\Cake\Event\EventInterface $event): void
     {
@@ -87,8 +89,8 @@ class UsersController extends AppController
             $user = $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
                 $this->Flash->success(__('The user has been saved.'));
-                $url = Router::url(['controller' => 'Articles', 'actioin' => 'index'], true);
-                $this->getMailer('User')->send('welcome', [$user, $url]);
+                $url = Router::url(['controller' => 'Articles', 'action' => 'index'], true);
+                $this->getMailer('User')->push('welcome', [$user->id, $url]);
                 return $this->redirect(['action' => 'login']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
