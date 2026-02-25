@@ -66,6 +66,7 @@ class Application extends BaseApplication
         // By default, does not allow fallback classes.
         FactoryLocator::add('Table', (new TableLocator())->allowFallbackClass(false));
         $this->addPlugin('Authorization');
+        $this->addPlugin('Queue', ['path' => ROOT . '/vendor/cakephp/queue/']);
     }
 
     /**
