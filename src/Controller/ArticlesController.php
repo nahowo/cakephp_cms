@@ -90,8 +90,8 @@ class ArticlesController extends AppController
     public function delete(?string $slug)
     {
         $this->request->allowMethod(['post', 'delete']);
-        $this->Authorization->authorize($article);
         $article = $this->Articles->findBySlug($slug)->firstOrFail();
+        $this->Authorization->authorize($article);
         if ($this->Articles->delete($article)) {
             $this->Flash->success(__('The {0} article has been deleted.', $article->title));
 
