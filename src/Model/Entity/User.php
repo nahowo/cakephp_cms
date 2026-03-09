@@ -34,6 +34,9 @@ class User extends Entity
         'created' => true,
         'modified' => true,
         'articles' => true,
+        'email_token' => true,
+        'email_token_generated_at' => true,
+        'verified' => true,
     ];
 
     /**

@@ -11,5 +11,5 @@
     <?= $this->Form->button(__('Login')); ?>
     <?= $this->Form->end() ?>
 
-    <?= $this->Html->link("Add User", ['action' => 'add']) ?>
+    <?= $this->Html->link("Add User", ['action' => 'register']) ?>
 </div>
