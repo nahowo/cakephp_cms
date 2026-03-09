@@ -27,4 +27,19 @@ class UserMailer extends Mailer
             ->viewBuilder()
             ->setTemplate('welcome');
     }
+
+    public function verifyEmail(int $userId, string $url): void
+    {
+        $user = $this->fetchTable('Users')->get($userId);
+        $this
+            ->setTo($user->email)
+            ->setSubject('Verify your email address for cakephp CMS!')
+            ->setEmailFormat('html')
+            ->setViewVars([
+                'username'=> explode('@', $user->email)[0],
+                'url'=> $url,
+            ])
+            ->viewBuilder()
+            ->setTemplate('verifyEmail');
+    }
 }
